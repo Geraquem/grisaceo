@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.MainActivity">
+
+    <!--    <com.google.android.gms.ads.AdView-->
+    <!--        android:id="@+id/adView"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        ads:adSize="BANNER"-->
+    <!--        ads:adUnitId="@string/banner"-->
+    <!--        ads:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        ads:layout_constraintLeft_toLeftOf="parent"-->
+    <!--        ads:layout_constraintRight_toRightOf="parent" />-->
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
+        ads:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_images"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintLeft_toLeftOf="parent"
+                ads:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@string/content_description"
+                    android:src="@drawable/ic_return"
+                    ads:layout_constraintBottom_toBottomOf="parent"
+                    ads:layout_constraintLeft_toLeftOf="parent"
+                    ads:layout_constraintRight_toRightOf="parent"
+                    ads:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/BigTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:maxLines="1"
+                android:text="@string/app_name"
+                android:textAllCaps="true"
+                android:textSize="18sp"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintLeft_toRightOf="@id/cl_images"
+                ads:layout_constraintRight_toRightOf="parent"
+                ads:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintTop_toBottomOf="@id/appBar"
+        app:defaultNavHost="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:navGraph="@navigation/main_nav_graph" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
