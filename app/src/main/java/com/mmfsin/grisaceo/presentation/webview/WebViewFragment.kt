@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
+import androidx.activity.OnBackPressedCallback
 import com.mmfsin.grisaceo.base.BaseFragmentNoVM
 import com.mmfsin.grisaceo.databinding.FragmentWebviewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +31,16 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
     }
 
     override fun setListeners() {
-        binding.apply { }
+        binding.apply {
+            activity?.let {
+                it.onBackPressedDispatcher.addCallback(it, object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        if (webview.canGoBack()) webview.goBack()
+                        else it.finish()
+                    }
+                })
+            }
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
