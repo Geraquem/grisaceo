@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import com.mmfsin.grisaceo.R
 import com.mmfsin.grisaceo.base.BaseFragmentNoVM
@@ -36,6 +35,7 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
 
     override fun setUI() {
         binding.apply {
+            loading.root.visibility = View.VISIBLE
             handleNavButtons(HOME)
             btnHome.apply {
                 ivIcon.tag = HOME
@@ -86,22 +86,26 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setWebView(url: Int) {
-        binding.webview.apply {
-            webViewClient = object : WebViewClient() {
-                override fun onPageCommitVisible(view: WebView?, url: String?) {
-                    super.onPageCommitVisible(view, url)
-                    url?.let {
-                        when (url) {
-                            getString(R.string.url_main) -> handleNavButtons(HOME)
-                            getString(R.string.url_tshirts) -> handleNavButtons(TSHIRTS)
-                            getString(R.string.url_designs) -> handleNavButtons(DESIGNS)
+        binding.apply {
+            loading.root.visibility = View.VISIBLE
+            webview.apply {
+                webViewClient = object : WebViewClient() {
+                    override fun onPageCommitVisible(view: WebView?, url: String?) {
+                        super.onPageCommitVisible(view, url)
+                        url?.let {
+                            when (url) {
+                                getString(R.string.url_main) -> handleNavButtons(HOME)
+                                getString(R.string.url_tshirts) -> handleNavButtons(TSHIRTS)
+                                getString(R.string.url_designs) -> handleNavButtons(DESIGNS)
+                            }
+                            Log.i("URL", "Url loaded -> $url")
+                            binding.loading.root.visibility = View.GONE
                         }
-                        Log.i("URL", "Url loaded -> $url")
                     }
                 }
+                settings.javaScriptEnabled = true
+                loadUrl(getString(url))
             }
-            settings.javaScriptEnabled = true
-            loadUrl(getString(url))
         }
     }
 
