@@ -7,4 +7,13 @@
     <string name="error_description">Inténtalo de nuevo más tarde</string>
     <string name="error_btn">Aceptar</string>
 
+    <!-- Buttons -->
+    <string name="btn_home">Inicio</string>
+    <string name="btn_tshirts">Camisetas</string>
+    <string name="btn_designs">Diseños</string>
+
+    <!-- URLs -->
+    <string name="url_main">https://grisaceo.com/</string>
+    <string name="url_tshirts">https://grisaceo.com/products/Camisetas-c163266532</string>
+    <string name="url_designs">https://grisaceo.com/products/Por-disenos-c163100761</string>
 </resources>
