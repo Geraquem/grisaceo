@@ -10,6 +10,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="bg_web">#1a1b17</color>
+    <color name="bg_navigation">#474747</color>
     <color name="error">#66F27474</color>
+
 
 </resources>

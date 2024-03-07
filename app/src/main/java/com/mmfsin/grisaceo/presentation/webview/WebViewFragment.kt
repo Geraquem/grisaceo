@@ -2,7 +2,11 @@ package com.mmfsin.grisaceo.presentation.webview
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +14,11 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import com.mmfsin.grisaceo.R
 import com.mmfsin.grisaceo.base.BaseFragmentNoVM
 import com.mmfsin.grisaceo.databinding.FragmentWebviewBinding
-import com.mmfsin.grisaceo.databinding.ItemButtonBinding
 import com.mmfsin.grisaceo.domain.models.Navigation
 import com.mmfsin.grisaceo.domain.models.Navigation.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,42 +40,36 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
     override fun setUI() {
         binding.apply {
             loading.root.visibility = View.VISIBLE
-            handleNavButtons(HOME)
-            btnHome.apply {
-                ivIcon.tag = HOME
-                ivIcon.setImageResource(R.drawable.ic_error)
-                tvTitle.text = getString(R.string.btn_home)
-            }
-            btnTshirts.apply {
-                ivIcon.tag = TSHIRTS
-                ivIcon.setImageResource(R.drawable.ic_error)
-                tvTitle.text = getString(R.string.btn_tshirts)
-            }
-            btnDesigns.apply {
-                ivIcon.tag = DESIGNS
-                ivIcon.setImageResource(R.drawable.ic_error)
-                tvTitle.text = getText(R.string.btn_designs)
-            }
+            selectNavItem(HOME)
         }
     }
 
     override fun setListeners() {
         binding.apply {
-
-            btnHome.root.setOnClickListener {
-                handleNavButtons(HOME)
-                setWebView(R.string.url_main)
+            bottomNav.setOnItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.nav_home -> setButtonClick(R.string.url_main)
+                    R.id.nav_tshirt -> setButtonClick(R.string.url_tshirts)
+                    R.id.nav_designs -> setButtonClick(R.string.url_designs)
+                }
+                true
             }
 
-            btnTshirts.root.setOnClickListener {
-                handleNavButtons(TSHIRTS)
-                setWebView(R.string.url_tshirts)
-            }
-
-            btnDesigns.root.setOnClickListener {
-                handleNavButtons(DESIGNS)
-                setWebView(R.string.url_designs)
-            }
+//            bottomNav.setOnItemReselectedListener { item ->
+//                when (item.itemId) {
+//                    R.id.nav_home -> {
+//                        val a = 2
+//                    }
+//
+////                    R.id.nav_tshirt -> {
+////                        val a = 2
+////                    }
+//
+//                    R.id.nav_designs -> {
+//                        val a = 2
+//                    }
+//                }
+//            }
 
             activity?.let {
                 it.onBackPressedDispatcher.addCallback(it, object : OnBackPressedCallback(true) {
@@ -84,6 +82,8 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
         }
     }
 
+    private fun setButtonClick(url: Int) = setWebView(url)
+
     @SuppressLint("SetJavaScriptEnabled")
     private fun setWebView(url: Int) {
         binding.apply {
@@ -94,9 +94,9 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
                         super.onPageCommitVisible(view, url)
                         url?.let {
                             when (url) {
-                                getString(R.string.url_main) -> handleNavButtons(HOME)
-                                getString(R.string.url_tshirts) -> handleNavButtons(TSHIRTS)
-                                getString(R.string.url_designs) -> handleNavButtons(DESIGNS)
+                                getString(R.string.url_main) -> selectNavItem(HOME)
+                                getString(R.string.url_tshirts) -> selectNavItem(TSHIRTS)
+                                getString(R.string.url_designs) -> selectNavItem(DESIGNS)
                             }
                             Log.i("URL", "Url loaded -> $url")
                             binding.loading.root.visibility = View.GONE
@@ -109,36 +109,24 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
         }
     }
 
-    private fun handleNavButtons(item: Navigation) {
-        binding.apply {
-            when (item) {
-                HOME -> {
-                    setOnButton(btnHome)
-                    setOffButton(listOf(btnTshirts, btnDesigns))
-                }
-
-                TSHIRTS -> {
-                    setOnButton(btnTshirts)
-                    setOffButton(listOf(btnHome, btnDesigns))
-                }
-
-                DESIGNS -> {
-                    setOnButton(btnDesigns)
-                    setOffButton(listOf(btnHome, btnTshirts))
-                }
-            }
+    private fun selectNavItem(navigation: Navigation) {
+        val item = when (navigation) {
+            HOME -> R.id.nav_home
+            TSHIRTS -> R.id.nav_tshirt
+            DESIGNS -> R.id.nav_designs
         }
-    }
+        val menuItem = binding.bottomNav.menu.findItem(item);
 
-    private fun setOnButton(button: ItemButtonBinding) {
-        button.ivIcon.setColorFilter(getColor(mContext, R.color.bg_web))
+//        val coloredIconDrawable = menuItem.icon?.constantState?.newDrawable()?.mutate()
+//        coloredIconDrawable?.setTint(ContextCompat.getColor(mContext, R.color.white))
+//        menuItem.icon = coloredIconDrawable
+//
+//
+//        val titleColorStateList = ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.white))
+//        menuItem.title = SpannableString(menuItem.title).apply {
+//            setSpan(ForegroundColorSpan(titleColorStateList.defaultColor), 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+//        }
 
-    }
-
-    private fun setOffButton(buttons: List<ItemButtonBinding>) {
-        buttons.forEach { button ->
-            button.ivIcon.setColorFilter(getColor(mContext, R.color.white))
-        }
     }
 
     override fun onAttach(context: Context) {
