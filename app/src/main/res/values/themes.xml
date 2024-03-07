@@ -4,4 +4,8 @@
     <style name="Theme.Grisaceo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/bg_web</item>
     </style>
+
+    <style name="SplashScreenTheme" parent="Theme.Grisaceo">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
 </resources>

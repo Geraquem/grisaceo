@@ -12,6 +12,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
@@ -22,6 +24,7 @@ import com.mmfsin.grisaceo.base.BaseFragmentNoVM
 import com.mmfsin.grisaceo.databinding.FragmentWebviewBinding
 import com.mmfsin.grisaceo.domain.models.Navigation
 import com.mmfsin.grisaceo.domain.models.Navigation.*
+import com.mmfsin.grisaceo.utils.showErrorDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -95,6 +98,16 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
                             binding.loading.root.visibility = View.GONE
                         }
                     }
+
+                    override fun onReceivedError(
+                        view: WebView?,
+                        request: WebResourceRequest?,
+                        error: WebResourceError?
+                    ) {
+                        super.onReceivedError(view, request, error)
+                        /** net::ERR_INTERNET_DISCONNECTED */
+                        error?.let { if (it.errorCode == -2) error() }
+                    }
                 }
                 settings.javaScriptEnabled = true
                 loadUrl(getString(url))
@@ -111,6 +124,8 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
         }
         binding.bottomNav.menu.findItem(item).isChecked = true
     }
+
+    private fun error() = activity?.showErrorDialog()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
