@@ -25,6 +25,7 @@ import com.mmfsin.grisaceo.databinding.FragmentWebviewBinding
 import com.mmfsin.grisaceo.domain.models.Navigation
 import com.mmfsin.grisaceo.domain.models.Navigation.*
 import com.mmfsin.grisaceo.utils.showErrorDialog
+import com.mmfsin.grisaceo.utils.showNetworkErrorDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,7 +39,7 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setWebView(R.string.url_main)
+        setWebView(url = R.string.url_main)
     }
 
     override fun setUI() {
@@ -71,10 +72,10 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
         }
     }
 
-    private fun setButtonClick(url: Int) = setWebView(url)
+    private fun setButtonClick(url: Int) = setWebView(url = url)
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun setWebView(url: Int) {
+    private fun setWebView(url: Int? = null, urlStr: String? = null) {
         binding.apply {
             loading.root.visibility = View.VISIBLE
             webview.apply {
@@ -106,11 +107,18 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
                     ) {
                         super.onReceivedError(view, request, error)
                         /** net::ERR_INTERNET_DISCONNECTED */
-                        error?.let { if (it.errorCode == -2) error() }
+                        error?.let {
+                            if (it.errorCode == -2) {
+                                activity?.showNetworkErrorDialog {
+                                    request?.let { rq -> setWebView(urlStr = rq.url.toString()) }
+                                }
+                            }
+                        }
                     }
                 }
                 settings.javaScriptEnabled = true
-                loadUrl(getString(url))
+                url?.let { loadUrl(getString(it)) }
+                urlStr?.let { loadUrl(it) }
             }
         }
     }
