@@ -32,6 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
 
     private lateinit var mContext: Context
+    private var networkErrorShowed = false
 
     override fun inflateView(
         inflater: LayoutInflater, container: ViewGroup?
@@ -108,9 +109,13 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
                         super.onReceivedError(view, request, error)
                         /** net::ERR_INTERNET_DISCONNECTED */
                         error?.let {
-                            if (it.errorCode == -2) {
+                            if (it.errorCode == -2 && !networkErrorShowed) {
+                                networkErrorShowed = true
                                 activity?.showNetworkErrorDialog {
-                                    request?.let { rq -> setWebView(urlStr = rq.url.toString()) }
+                                    request?.let { rq ->
+                                        networkErrorShowed = false
+                                        setWebView(urlStr = rq.url.toString())
+                                    }
                                 }
                             }
                         }
