@@ -115,18 +115,7 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
             TSHIRTS -> R.id.nav_tshirt
             DESIGNS -> R.id.nav_designs
         }
-        val menuItem = binding.bottomNav.menu.findItem(item);
-
-//        val coloredIconDrawable = menuItem.icon?.constantState?.newDrawable()?.mutate()
-//        coloredIconDrawable?.setTint(ContextCompat.getColor(mContext, R.color.white))
-//        menuItem.icon = coloredIconDrawable
-//
-//
-//        val titleColorStateList = ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.white))
-//        menuItem.title = SpannableString(menuItem.title).apply {
-//            setSpan(ForegroundColorSpan(titleColorStateList.defaultColor), 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-//        }
-
+        binding.bottomNav.menu.findItem(item).isChecked = true
     }
 
     override fun onAttach(context: Context) {
