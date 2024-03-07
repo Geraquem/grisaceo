@@ -3,6 +3,7 @@ package com.mmfsin.grisaceo.presentation.webview
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -90,6 +91,12 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
             loading.root.visibility = View.VISIBLE
             webview.apply {
                 webViewClient = object : WebViewClient() {
+
+                    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                        super.onPageStarted(view, url, favicon)
+                        loading.root.visibility = View.VISIBLE
+                    }
+
                     override fun onPageCommitVisible(view: WebView?, url: String?) {
                         super.onPageCommitVisible(view, url)
                         url?.let {
