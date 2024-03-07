@@ -7,6 +7,12 @@
     <string name="error_description">Inténtalo de nuevo más tarde</string>
     <string name="error_btn">Aceptar</string>
 
+    <!-- NETWORK ERROR -->
+    <string name="nw_error_title">Ha ocurrido un problema</string>
+    <string name="nw_error_description">Parece que no tienes conexión a internet</string>
+    <string name="nw_error_btn_retry">Reintentar</string>
+    <string name="nw_error_btn_close">Cerrar Grisaceo</string>
+
     <!-- Buttons -->
     <string name="btn_home">Inicio</string>
     <string name="btn_tshirts">Camisetas</string>

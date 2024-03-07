@@ -12,6 +12,10 @@ class NetworkErrorDialog(val retry: () -> Unit) : BaseDialog<DialogNetworkErrorB
 
     override fun setCustomViewDialog(dialog: Dialog) = centerViewDialog(dialog)
 
+    override fun setUI() {
+        isCancelable = false
+    }
+
     override fun setListeners() {
         binding.apply {
             btnAccept.setOnClickListener {
@@ -20,7 +24,7 @@ class NetworkErrorDialog(val retry: () -> Unit) : BaseDialog<DialogNetworkErrorB
             }
 
             btnClose.setOnClickListener {
-                activity?.onBackPressedDispatcher?.onBackPressed()
+                activity?.finish()
                 dismiss()
             }
         }
