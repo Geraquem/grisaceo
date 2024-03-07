@@ -51,26 +51,11 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
                 when (item.itemId) {
                     R.id.nav_home -> setButtonClick(R.string.url_main)
                     R.id.nav_tshirt -> setButtonClick(R.string.url_tshirts)
+                    R.id.nav_complements -> setButtonClick(R.string.url_complements)
                     R.id.nav_designs -> setButtonClick(R.string.url_designs)
                 }
                 true
             }
-
-//            bottomNav.setOnItemReselectedListener { item ->
-//                when (item.itemId) {
-//                    R.id.nav_home -> {
-//                        val a = 2
-//                    }
-//
-////                    R.id.nav_tshirt -> {
-////                        val a = 2
-////                    }
-//
-//                    R.id.nav_designs -> {
-//                        val a = 2
-//                    }
-//                }
-//            }
 
             activity?.let {
                 it.onBackPressedDispatcher.addCallback(it, object : OnBackPressedCallback(true) {
@@ -103,6 +88,7 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
                             when (url) {
                                 getString(R.string.url_main) -> selectNavItem(HOME)
                                 getString(R.string.url_tshirts) -> selectNavItem(TSHIRTS)
+                                getString(R.string.url_complements) -> selectNavItem(COMPLEMENTS)
                                 getString(R.string.url_designs) -> selectNavItem(DESIGNS)
                             }
                             Log.i("URL", "Url loaded -> $url")
@@ -120,6 +106,7 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
         val item = when (navigation) {
             HOME -> R.id.nav_home
             TSHIRTS -> R.id.nav_tshirt
+            COMPLEMENTS -> R.id.nav_complements
             DESIGNS -> R.id.nav_designs
         }
         binding.bottomNav.menu.findItem(item).isChecked = true

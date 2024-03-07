@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg_navigation"
+        android:paddingHorizontal="8dp"
         android:paddingTop="4dp"
         android:paddingBottom="8dp"
         app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
@@ -29,6 +30,7 @@
         app:itemRippleColor="@null"
         app:itemTextAppearanceActive="@color/black"
         app:itemTextColor="@color/bg_navigation_item"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 

@@ -11,6 +11,11 @@
         android:title="@string/btn_tshirts" />
 
     <item
+        android:id="@+id/nav_complements"
+        android:icon="@drawable/ic_mug"
+        android:title="@string/btn_complements" />
+
+    <item
         android:id="@+id/nav_designs"
         android:icon="@drawable/ic_designs"
         android:title="@string/btn_designs" />
