@@ -25,7 +25,7 @@ class DataRepository @Inject constructor() : IDataRepository {
                 is Result.Success -> {
                     val gist = Gson().fromJson(result.get(), Gist::class.java)
                     urls = parseUrls(gist.files.urls.content)
-                    Log.i("->", "Gist url ${gist.url}")
+                    Log.i("Gist url -------------->", gist.url)
                 }
 
                 is Result.Failure -> Log.e("ERROR", "Error getting Gist")
