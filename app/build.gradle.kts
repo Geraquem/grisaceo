@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-
     id("androidx.navigation.safeargs.kotlin")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
@@ -76,6 +75,12 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
     implementation("androidx.navigation:navigation-compose:2.7.7")
+
+    //Git Gist
+    implementation("com.github.kittinunf.fuel:fuel-android:2.3.1")
+
+    //Gson
+    implementation("com.google.code.gson:gson:2.9.0")
 
     //Google services
 //    implementation("com.google.android.gms:play-services-ads:22.1.0")

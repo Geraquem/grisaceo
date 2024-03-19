@@ -52,8 +52,8 @@ class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>()
     override fun observe() {
         viewModel.event.observe(this) { event ->
             when (event) {
-                is WebViewEvent.Urls -> {
-                    Toast.makeText(mContext, "ey", Toast.LENGTH_SHORT).show()
+                is WebViewEvent.GetUrls -> {
+                    Toast.makeText(mContext, event.urls.aa, Toast.LENGTH_SHORT).show()
                 }
 
                 is WebViewEvent.SWW -> error()

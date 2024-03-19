@@ -13,7 +13,10 @@ class WebViewViewModel @Inject constructor(
     fun getUrls() {
         executeUseCase(
             { getUrlsUseCase.execute() },
-            { result -> _event.value = WebViewEvent.Urls("result") },
+            { result ->
+                _event.value =
+                    result?.let { WebViewEvent.GetUrls(result) } ?: run { WebViewEvent.SWW }
+            },
             { _event.value = WebViewEvent.SWW }
         )
     }
