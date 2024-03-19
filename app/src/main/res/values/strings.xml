@@ -20,8 +20,8 @@
     <string name="btn_designs">Diseños</string>
 
     <!-- URLs -->
-    <string name="url_main">https://grisaceo.com/</string>
-    <string name="url_tshirts">https://grisaceo.com/products/Camisetas-c163266532</string>
-    <string name="url_complements">https://grisaceo.com/products/Accesorios-c163017296</string>
-    <string name="url_designs">https://grisaceo.com/products/Por-disenos-c163100761</string>
+    <string name="url_main">https://grisaceo.company.site/</string>
+    <string name="url_tshirts">https://grisaceo.company.site/products/Camisetas-c163266532</string>
+    <string name="url_complements">https://grisaceo.company.site/products/Accesorios-c163017296</string>
+    <string name="url_designs">https://grisaceo.company.site/products/Por-disenos-c163100761</string>
 </resources>

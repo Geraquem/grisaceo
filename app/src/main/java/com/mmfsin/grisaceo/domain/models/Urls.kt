@@ -3,7 +3,8 @@ package com.mmfsin.grisaceo.domain.models
 import com.google.gson.annotations.SerializedName
 
 data class Urls(
-    @SerializedName("main") val a: String,
-    @SerializedName("main2") val aa: String,
-    @SerializedName("main3") val aaa: String
+    @SerializedName("url_main") val urlMain: String,
+    @SerializedName("url_tshirts") val urlTshirts: String,
+    @SerializedName("url_complements") val urlComplements: String,
+    @SerializedName("url_designs") val urlDesigns: String
 )

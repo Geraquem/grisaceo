@@ -12,7 +12,6 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import com.mmfsin.grisaceo.R
@@ -20,6 +19,7 @@ import com.mmfsin.grisaceo.base.BaseFragment
 import com.mmfsin.grisaceo.databinding.FragmentWebviewBinding
 import com.mmfsin.grisaceo.domain.models.Navigation
 import com.mmfsin.grisaceo.domain.models.Navigation.*
+import com.mmfsin.grisaceo.domain.models.Urls
 import com.mmfsin.grisaceo.utils.showErrorDialog
 import com.mmfsin.grisaceo.utils.showNetworkErrorDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +30,7 @@ class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>()
     override val viewModel: WebViewViewModel by viewModels()
 
     private lateinit var mContext: Context
+    private var urls: Urls? = null
     private var networkErrorShowed = false
 
     override fun inflateView(
@@ -39,13 +40,11 @@ class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getUrls()
-//        setWebView(url = R.string.url_main)
     }
 
     override fun setUI() {
         binding.apply {
             loading.root.visibility = View.VISIBLE
-//            selectNavItem(HOME)
         }
     }
 
@@ -53,7 +52,10 @@ class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>()
         viewModel.event.observe(this) { event ->
             when (event) {
                 is WebViewEvent.GetUrls -> {
-                    Toast.makeText(mContext, event.urls.aa, Toast.LENGTH_SHORT).show()
+                    urls = event.urls
+                    setWebView(url = event.urls.urlMain)
+                    selectNavItem(HOME)
+                    binding.loading.root.visibility = View.GONE
                 }
 
                 is WebViewEvent.SWW -> error()
@@ -64,11 +66,13 @@ class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>()
     override fun setListeners() {
         binding.apply {
             bottomNav.setOnItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.nav_home -> setButtonClick(R.string.url_main)
-                    R.id.nav_tshirt -> setButtonClick(R.string.url_tshirts)
-                    R.id.nav_complements -> setButtonClick(R.string.url_complements)
-                    R.id.nav_designs -> setButtonClick(R.string.url_designs)
+                urls?.let { url ->
+                    when (item.itemId) {
+                        R.id.nav_home -> setButtonClick(url.urlMain)
+                        R.id.nav_tshirt -> setButtonClick(url.urlTshirts)
+                        R.id.nav_complements -> setButtonClick(url.urlComplements)
+                        R.id.nav_designs -> setButtonClick(url.urlDesigns)
+                    }
                 }
                 true
             }
@@ -84,10 +88,10 @@ class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>()
         }
     }
 
-    private fun setButtonClick(url: Int) = setWebView(url = url)
+    private fun setButtonClick(url: String) = setWebView(url = url)
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun setWebView(url: Int? = null, urlStr: String? = null) {
+    private fun setWebView(url: String) {
         binding.apply {
             loading.root.visibility = View.VISIBLE
             webview.apply {
@@ -102,10 +106,10 @@ class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>()
                         super.onPageCommitVisible(view, url)
                         url?.let {
                             when (url) {
-                                getString(R.string.url_main) -> selectNavItem(HOME)
-                                getString(R.string.url_tshirts) -> selectNavItem(TSHIRTS)
-                                getString(R.string.url_complements) -> selectNavItem(COMPLEMENTS)
-                                getString(R.string.url_designs) -> selectNavItem(DESIGNS)
+                                urls?.urlMain -> selectNavItem(HOME)
+                                urls?.urlTshirts -> selectNavItem(TSHIRTS)
+                                urls?.urlComplements -> selectNavItem(COMPLEMENTS)
+                                urls?.urlDesigns -> selectNavItem(DESIGNS)
                             }
                             Log.i("URL", "Url loaded -> $url")
                             binding.loading.root.visibility = View.GONE
@@ -125,7 +129,7 @@ class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>()
                                 activity?.showNetworkErrorDialog {
                                     request?.let { rq ->
                                         networkErrorShowed = false
-                                        setWebView(urlStr = rq.url.toString())
+                                        setWebView(rq.url.toString())
                                     }
                                 }
                             }
@@ -133,8 +137,7 @@ class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>()
                     }
                 }
                 settings.javaScriptEnabled = true
-                url?.let { loadUrl(getString(it)) }
-                urlStr?.let { loadUrl(it) }
+                loadUrl(url)
             }
         }
     }
