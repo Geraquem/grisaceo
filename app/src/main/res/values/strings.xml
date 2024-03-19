@@ -2,6 +2,9 @@
     <string name="app_name">Grisaceo</string>
     <string name="content_description">image</string>
 
+    <!-- LOADING -->
+    <string name="loading_text">Un momento</string>
+
     <!-- ERROR -->
     <string name="error_title">Ha ocurrido un problema</string>
     <string name="error_description">Inténtalo de nuevo más tarde</string>

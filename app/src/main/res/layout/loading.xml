@@ -8,9 +8,11 @@
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
         android:indeterminate="true"
-        app:indicatorColor="@color/black"
-        app:indicatorSize="48dp"
+        app:indicatorColor="@color/bg_web"
+        app:indicatorSize="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

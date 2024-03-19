@@ -13,6 +13,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.mmfsin.grisaceo.R
 import com.mmfsin.grisaceo.base.BaseFragment
@@ -44,7 +45,8 @@ class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>()
 
     override fun setUI() {
         binding.apply {
-            loading.root.visibility = View.VISIBLE
+            firstLoading.root.visibility = View.VISIBLE
+            loading.root.visibility = View.GONE
         }
     }
 
@@ -55,7 +57,6 @@ class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>()
                     urls = event.urls
                     setWebView(url = event.urls.urlMain)
                     selectNavItem(HOME)
-                    binding.loading.root.visibility = View.GONE
                 }
 
                 is WebViewEvent.SWW -> error()
@@ -93,15 +94,9 @@ class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>()
     @SuppressLint("SetJavaScriptEnabled")
     private fun setWebView(url: String) {
         binding.apply {
-            loading.root.visibility = View.VISIBLE
+            if (!firstLoading.root.isVisible) loading.root.visibility = View.VISIBLE
             webview.apply {
                 webViewClient = object : WebViewClient() {
-
-                    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                        super.onPageStarted(view, url, favicon)
-                        loading.root.visibility = View.VISIBLE
-                    }
-
                     override fun onPageCommitVisible(view: WebView?, url: String?) {
                         super.onPageCommitVisible(view, url)
                         url?.let {
@@ -112,7 +107,8 @@ class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>()
                                 urls?.urlDesigns -> selectNavItem(DESIGNS)
                             }
                             Log.i("URL", "Url loaded -> $url")
-                            binding.loading.root.visibility = View.GONE
+                            firstLoading.root.visibility = View.GONE
+                            loading.root.visibility = View.GONE
                         }
                     }
 
