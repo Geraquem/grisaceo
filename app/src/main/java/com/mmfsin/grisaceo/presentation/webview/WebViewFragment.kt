@@ -2,12 +2,8 @@ package com.mmfsin.grisaceo.presentation.webview
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +12,11 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getColor
+import androidx.fragment.app.viewModels
 import com.mmfsin.grisaceo.R
-import com.mmfsin.grisaceo.base.BaseFragmentNoVM
+import com.mmfsin.grisaceo.base.BaseFragment
 import com.mmfsin.grisaceo.databinding.FragmentWebviewBinding
 import com.mmfsin.grisaceo.domain.models.Navigation
 import com.mmfsin.grisaceo.domain.models.Navigation.*
@@ -29,7 +25,9 @@ import com.mmfsin.grisaceo.utils.showNetworkErrorDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
+class WebViewFragment : BaseFragment<FragmentWebviewBinding, WebViewViewModel>() {
+
+    override val viewModel: WebViewViewModel by viewModels()
 
     private lateinit var mContext: Context
     private var networkErrorShowed = false
@@ -40,13 +38,26 @@ class WebViewFragment : BaseFragmentNoVM<FragmentWebviewBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setWebView(url = R.string.url_main)
+        viewModel.getUrls()
+//        setWebView(url = R.string.url_main)
     }
 
     override fun setUI() {
         binding.apply {
             loading.root.visibility = View.VISIBLE
-            selectNavItem(HOME)
+//            selectNavItem(HOME)
+        }
+    }
+
+    override fun observe() {
+        viewModel.event.observe(this) { event ->
+            when (event) {
+                is WebViewEvent.Urls -> {
+                    Toast.makeText(mContext, "ey", Toast.LENGTH_SHORT).show()
+                }
+
+                is WebViewEvent.SWW -> error()
+            }
         }
     }
 
