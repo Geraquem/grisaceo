@@ -1,6 +1,7 @@
 package com.mmfsin.grisaceo.base
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -8,10 +9,9 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-//        Realm.init(this)
-//        MobileAds.initialize(this) {}
 
 //        getFCMToken()
+        disableNightMode()
     }
 
     private fun getFCMToken() {
@@ -20,4 +20,7 @@ class App : Application() {
 //            else Log.i("FCM", "no token")
 //        }
     }
+
+    private fun disableNightMode() =
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 }
